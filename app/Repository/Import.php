@@ -151,8 +151,20 @@ class Import extends Main
     }
 
     public function getPosts($file){
+        // из-за того что таблицы разные в рахных базах получаем конкртетную
+
+        $result = $this->app->dbTemp->query("SHOW TABLES");
+        while ($row = $result->fetch(\PDO::FETCH_NUM)){
+           $tables[] = $row[0];
+        }
+        $postTable = 'wp_posts';
+        foreach ($tables as $table) {
+            if(strpos($table, "_posts") !== false){
+                $postTable = $table;
+            }
+        }
         $arPosts = [];
-        $res = $this->app->dbTemp->query("SELECT * FROM `wp_posts`");
+        $res = $this->app->dbTemp->query("SELECT * FROM `$postTable`");
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)){
 
             $row['file_name'] = $file;
