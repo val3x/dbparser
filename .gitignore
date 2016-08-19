@@ -1,2 +1,2 @@
-upload/xml/*
-upload/sql/*
+upload/xml/*.xml
+upload/sql/*.sql
